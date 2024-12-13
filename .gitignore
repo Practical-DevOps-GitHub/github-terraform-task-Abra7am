@@ -5,4 +5,5 @@ deploy_key
 *.tfstate
 *.tfstate.backup
 .terraform.lock.hcl
-crash.log
+crash.log.DS_Store
+deploy_key
