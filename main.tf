@@ -9,7 +9,12 @@ terraform {
 
 # Provider Configuration
 provider "github" {
-  token = "placeholder" # Autograding system will replace this with the actual token
+  token = var.github_token 
+}
+
+variable "github_token" {
+  description = "GitHub Token for Autograding"
+  type        = string
 }
 
 # Adding SoftServedata as Collaborator
@@ -51,7 +56,7 @@ resource "github_branch_protection" "develop_protection" {
   }
 }
 
-# Add CODEOWNERS File for the Main Branch
+# Add CODEOWNERS File for Main Branch
 resource "github_repository_file" "codeowners" {
   repository     = "github-terraform-task-Abra7am"
   file           = ".github/CODEOWNERS"
@@ -98,5 +103,5 @@ resource "github_repository_webhook" "discord_webhook" {
 resource "github_actions_secret" "pat" {
   repository      = "github-terraform-task-Abra7am"
   secret_name     = "PAT"
-  plaintext_value = "placeholder" # Autograding system will replace this with the actual token
+  plaintext_value = "placeholder" 
 }
