@@ -7,19 +7,25 @@ terraform {
   }
 }
 
-
+# Provider Configuration
 provider "github" {
-  token = env.TASK_TOKEN #! To run Terraform securly, I stored my TOKEN in secrets and utilized it with ENV.
+  token = var.github_token
+}
+
+# Define the GitHub token variable
+variable "github_token" {
+  description = "GitHub Personal Access Token"
+  type        = string
 }
 
 # GitHub Repository Configuration
 resource "github_repository" "repo" {
-  name        = "github-terraform-task-Abra7am" #! My TASK repo!
+  name        = "github-terraform-task-Abra7am"
   description = "Repository managed by Terraform"
-  private     = true
+  visibility  = "private" # Corrected from `private = true`
 }
 
-# Adding SoftServedata as Collaborator 
+# Adding SoftServedata as Collaborator
 resource "github_repository_collaborator" "collaborator" {
   repository = github_repository.repo.name
   username   = "softservedata"
@@ -105,5 +111,5 @@ resource "github_repository_webhook" "discord_webhook" {
 resource "github_actions_secret" "pat" {
   repository      = github_repository.repo.name
   secret_name     = "PAT"
-  plaintext_value = env.TASK_TOKEN #! I used the same variable for both secrets and ENV!
+  plaintext_value = var.github_token 
 }
