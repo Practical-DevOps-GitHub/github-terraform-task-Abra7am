@@ -1,3 +1,4 @@
+# Configure Terraform required providers
 terraform {
   required_providers {
     github = {
@@ -7,15 +8,26 @@ terraform {
   }
 }
 
+# Define the GitHub provider with injected token
 provider "github" {
-  token = "placeholder" # Autograding system injects this dynamically
+  token = var.github_token
 }
 
-# Add Collaborator
+# Input variable for GitHub token
+variable "github_token" {
+  type = string
+  sensitive = true
+}
+
+# Add Collaborator (assuming username is injected)
 resource "github_repository_collaborator" "collaborator" {
   repository = "github-terraform-task-Abra7am"
-  username   = "softservedata"
-  permission = "push"
+  username   = var.collaborator_username
+}
+
+# Input variable for collaborator username
+variable "collaborator_username" {
+  type = string
 }
 
 # Set Default Branch to 'develop'
@@ -75,7 +87,7 @@ EOF
   commit_message = "Add pull request template"
 }
 
-# Add Deploy Key
+# Add Deploy Key (assuming public key is in deploy_key.pub)
 resource "github_repository_deploy_key" "deploy_key" {
   repository = "github-terraform-task-Abra7am"
   title      = "DEPLOY_KEY"
@@ -93,9 +105,15 @@ resource "github_repository_webhook" "discord_webhook" {
   }
 }
 
-# Add Personal Access Token (PAT) as GitHub Actions Secret
+# Add Personal Access Token (PAT) as GitHub Actions Secret (assuming PAT is injected)
 resource "github_actions_secret" "pat" {
   repository      = "github-terraform-task-Abra7am"
   secret_name     = "PAT"
-  plaintext_value = "placeholder" # Autograding system injects this dynamically
+  plaintext_value = var.github_pat
+}
+
+# Input variable for Personal Access Token (PAT)
+variable "github_pat" {
+  type = string
+  sensitive = true
 }
