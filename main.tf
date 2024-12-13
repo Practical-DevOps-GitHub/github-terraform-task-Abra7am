@@ -9,7 +9,7 @@ terraform {
 
 
 provider "github" {
-  token = env.TERRAFOM_TASK_TOKEN #! To run Terraform securly, I stored my TOKEN in secrets and utilized it with ENV.
+  token = env.TASK_TOKEN #! To run Terraform securly, I stored my TOKEN in secrets and utilized it with ENV.
 }
 
 # GitHub Repository Configuration
@@ -105,5 +105,5 @@ resource "github_repository_webhook" "discord_webhook" {
 resource "github_actions_secret" "pat" {
   repository      = github_repository.repo.name
   secret_name     = "PAT"
-  plaintext_value = env.TERRAFOM_TASK_TOKEN #! I used the same variable for both secrets and ENV!
+  plaintext_value = env.TASK_TOKEN #! I used the same variable for both secrets and ENV!
 }
