@@ -1,4 +1,3 @@
-# Configure Terraform required providers
 terraform {
   required_providers {
     github = {
@@ -8,35 +7,24 @@ terraform {
   }
 }
 
-# Define the GitHub provider with injected token
 provider "github" {
-  token = "placeholder"
+  token = "placeholder" 
 }
 
-# Input variable for GitHub token
-variable "github_token" {
-  type = string
-  sensitive = true
-}
-
-# Add Collaborator (assuming username is injected)
+# Collaborator Configuration
 resource "github_repository_collaborator" "collaborator" {
   repository = "github-terraform-task-Abra7am"
-  username   = var.collaborator_username
+  username   = "softservedata"
+  permission = "push"
 }
 
-# Input variable for collaborator username
-variable "collaborator_username" {
-  type = string
-}
-
-# Set Default Branch to 'develop'
+# Default Branch Configuration
 resource "github_branch_default" "develop_default" {
   repository = "github-terraform-task-Abra7am"
   branch     = "develop"
 }
 
-# Protect 'main' Branch
+# Branch Protection for 'main'
 resource "github_branch_protection" "main_protection" {
   repository_id = "github-terraform-task-Abra7am"
   pattern       = "main"
@@ -47,21 +35,21 @@ resource "github_branch_protection" "main_protection" {
     required_approving_review_count = 1
   }
 
+  enforce_admins = true
 }
 
-# Protect 'develop' Branch
+# Branch Protection for 'develop'
 resource "github_branch_protection" "develop_protection" {
   repository_id = "github-terraform-task-Abra7am"
   pattern       = "develop"
 
   required_pull_request_reviews {
     dismiss_stale_reviews           = false
-    require_code_owner_reviews      = false
     required_approving_review_count = 2
   }
 }
 
-# Add CODEOWNERS File
+# CODEOWNERS for 'main' Branch
 resource "github_repository_file" "codeowners" {
   repository     = "github-terraform-task-Abra7am"
   file           = ".github/CODEOWNERS"
@@ -69,7 +57,7 @@ resource "github_repository_file" "codeowners" {
   commit_message = "Add CODEOWNERS file"
 }
 
-# Add Pull Request Template
+# Pull Request Template
 resource "github_repository_file" "pr_template" {
   repository     = "github-terraform-task-Abra7am"
   file           = ".github/pull_request_template.md"
@@ -86,7 +74,7 @@ EOF
   commit_message = "Add pull request template"
 }
 
-# Add Deploy Key (assuming public key is in deploy_key.pub)
+# Deploy Key
 resource "github_repository_deploy_key" "deploy_key" {
   repository = "github-terraform-task-Abra7am"
   title      = "DEPLOY_KEY"
@@ -94,7 +82,7 @@ resource "github_repository_deploy_key" "deploy_key" {
   read_only  = false
 }
 
-# Add Webhook for Discord Notifications
+# Webhook for Discord Notifications
 resource "github_repository_webhook" "discord_webhook" {
   repository = "github-terraform-task-Abra7am"
   events     = ["pull_request"]
@@ -104,15 +92,9 @@ resource "github_repository_webhook" "discord_webhook" {
   }
 }
 
-# Add Personal Access Token (PAT) as GitHub Actions Secret (assuming PAT is injected)
+# GitHub Actions Secret for PAT
 resource "github_actions_secret" "pat" {
   repository      = "github-terraform-task-Abra7am"
   secret_name     = "PAT"
-  plaintext_value = "placeholder"
-}
-
-# Input variable for Personal Access Token (PAT)
-variable "github_pat" {
-  type = string
-  sensitive = true
+  plaintext_value = "placeholder" 
 }
