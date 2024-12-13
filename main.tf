@@ -10,7 +10,7 @@ terraform {
 
 # Define the GitHub provider with injected token
 provider "github" {
-  token = var.github_token
+  token = "placeholder"
 }
 
 # Input variable for GitHub token
@@ -47,7 +47,6 @@ resource "github_branch_protection" "main_protection" {
     required_approving_review_count = 1
   }
 
-  enforce_admins = true
 }
 
 # Protect 'develop' Branch
@@ -109,7 +108,7 @@ resource "github_repository_webhook" "discord_webhook" {
 resource "github_actions_secret" "pat" {
   repository      = "github-terraform-task-Abra7am"
   secret_name     = "PAT"
-  plaintext_value = var.github_pat
+  plaintext_value = "placeholder"
 }
 
 # Input variable for Personal Access Token (PAT)
