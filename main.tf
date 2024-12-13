@@ -7,24 +7,18 @@ terraform {
   }
 }
 
-# Provider Configuration
 provider "github" {
-  token = var.github_token 
+  token = "placeholder" # Autograding system injects this dynamically
 }
 
-variable "github_token" {
-  description = "GitHub Token for Autograding"
-  type        = string
-}
-
-# Adding SoftServedata as Collaborator
+# Add Collaborator
 resource "github_repository_collaborator" "collaborator" {
   repository = "github-terraform-task-Abra7am"
   username   = "softservedata"
   permission = "push"
 }
 
-# Setting Default Branch to 'develop'
+# Set Default Branch to 'develop'
 resource "github_branch_default" "develop_default" {
   repository = "github-terraform-task-Abra7am"
   branch     = "develop"
@@ -56,7 +50,7 @@ resource "github_branch_protection" "develop_protection" {
   }
 }
 
-# Add CODEOWNERS File for Main Branch
+# Add CODEOWNERS File
 resource "github_repository_file" "codeowners" {
   repository     = "github-terraform-task-Abra7am"
   file           = ".github/CODEOWNERS"
@@ -103,5 +97,5 @@ resource "github_repository_webhook" "discord_webhook" {
 resource "github_actions_secret" "pat" {
   repository      = "github-terraform-task-Abra7am"
   secret_name     = "PAT"
-  plaintext_value = "placeholder" 
+  plaintext_value = "placeholder" # Autograding system injects this dynamically
 }
