@@ -51,7 +51,7 @@ resource "github_branch_protection" "develop_protection" {
   }
 }
 
-# Add CODEOWNERS File
+# Add CODEOWNERS File for the Main Branch
 resource "github_repository_file" "codeowners" {
   repository     = "github-terraform-task-Abra7am"
   file           = ".github/CODEOWNERS"
@@ -89,7 +89,7 @@ resource "github_repository_webhook" "discord_webhook" {
   repository = "github-terraform-task-Abra7am"
   events     = ["pull_request"]
   configuration {
-    url          = "https://discord.com/api/webhooks/your-webhook-url"
+    url          = "https://discord.com/api/webhooks/1317118903465545760/z17XkRsumqlrxUgKYQUNKEwWxC__tqC1KB2mi09KZwwFxZNxqzBAXh4N4AF5LWvM4Dap"
     content_type = "json"
   }
 }
