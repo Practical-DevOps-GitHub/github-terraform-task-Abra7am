@@ -9,32 +9,25 @@ terraform {
 
 # Provider Configuration
 provider "github" {
-  token = "placeholder" # The autograding system will replace this with the actual token
-}
-
-# GitHub Repository Configuration
-resource "github_repository" "repo" {
-  name        = "github-terraform-task-Abra7am"
-  description = "Repository managed by Terraform"
-  visibility  = "private"
+  token = "placeholder" # Autograding system will replace this with the actual token
 }
 
 # Adding SoftServedata as Collaborator
 resource "github_repository_collaborator" "collaborator" {
-  repository = github_repository.repo.name
+  repository = "github-terraform-task-Abra7am"
   username   = "softservedata"
   permission = "push"
 }
 
 # Setting Default Branch to 'develop'
 resource "github_branch_default" "develop_default" {
-  repository = github_repository.repo.name
+  repository = "github-terraform-task-Abra7am"
   branch     = "develop"
 }
 
 # Protect 'main' Branch
 resource "github_branch_protection" "main_protection" {
-  repository_id = github_repository.repo.node_id
+  repository_id = "github-terraform-task-Abra7am"
   pattern       = "main"
 
   required_pull_request_reviews {
@@ -48,7 +41,7 @@ resource "github_branch_protection" "main_protection" {
 
 # Protect 'develop' Branch
 resource "github_branch_protection" "develop_protection" {
-  repository_id = github_repository.repo.node_id
+  repository_id = "github-terraform-task-Abra7am"
   pattern       = "develop"
 
   required_pull_request_reviews {
@@ -60,7 +53,7 @@ resource "github_branch_protection" "develop_protection" {
 
 # Add CODEOWNERS File
 resource "github_repository_file" "codeowners" {
-  repository     = github_repository.repo.name
+  repository     = "github-terraform-task-Abra7am"
   file           = ".github/CODEOWNERS"
   content        = "* @softservedata"
   commit_message = "Add CODEOWNERS file"
@@ -68,7 +61,7 @@ resource "github_repository_file" "codeowners" {
 
 # Add Pull Request Template
 resource "github_repository_file" "pr_template" {
-  repository     = github_repository.repo.name
+  repository     = "github-terraform-task-Abra7am"
   file           = ".github/pull_request_template.md"
   content        = <<EOF
 Describe your changes
@@ -85,7 +78,7 @@ EOF
 
 # Add Deploy Key
 resource "github_repository_deploy_key" "deploy_key" {
-  repository = github_repository.repo.name
+  repository = "github-terraform-task-Abra7am"
   title      = "DEPLOY_KEY"
   key        = file("deploy_key.pub")
   read_only  = false
@@ -93,17 +86,17 @@ resource "github_repository_deploy_key" "deploy_key" {
 
 # Add Webhook for Discord Notifications
 resource "github_repository_webhook" "discord_webhook" {
-  repository = github_repository.repo.name
+  repository = "github-terraform-task-Abra7am"
   events     = ["pull_request"]
   configuration {
-    url          = "https://discord.com/api/webhooks/1317118903465545760/z17XkRsumqlrxUgKYQUNKEwWxC__tqC1KB2mi09KZwwFxZNxqzBAXh4N4AF5LWvM4Dap"
+    url          = "https://discord.com/api/webhooks/your-webhook-url"
     content_type = "json"
   }
 }
 
 # Add Personal Access Token (PAT) as GitHub Actions Secret
 resource "github_actions_secret" "pat" {
-  repository      = github_repository.repo.name
+  repository      = "github-terraform-task-Abra7am"
   secret_name     = "PAT"
-  plaintext_value = "placeholder" # The autograding system will replace this
+  plaintext_value = "placeholder" # Autograding system will replace this with the actual token
 }
