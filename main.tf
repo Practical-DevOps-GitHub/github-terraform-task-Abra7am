@@ -1,3 +1,13 @@
+terraform {
+  required_providers {
+    github = {
+      source  = "integrations/github"
+      version = ">= 5.0.0"
+    }
+  }
+}
+
+
 provider "github" {
   token = env.TERRAFOM_TASK_TOKEN #! To run Terraform securly, I stored my TOKEN in secrets and utilized it with ENV.
 }
@@ -50,17 +60,17 @@ resource "github_branch_protection" "develop_protection" {
 
 # Add CODEOWNERS File
 resource "github_repository_file" "codeowners" {
-  repository    = github_repository.repo.name
-  file          = ".github/CODEOWNERS"
-  content       = "* @softservedata"
+  repository     = github_repository.repo.name
+  file           = ".github/CODEOWNERS"
+  content        = "* @softservedata"
   commit_message = "Add CODEOWNERS file"
 }
 
 # Add Pull Request Template
 resource "github_repository_file" "pr_template" {
-  repository    = github_repository.repo.name
-  file          = ".github/pull_request_template.md"
-  content       = <<EOF
+  repository     = github_repository.repo.name
+  file           = ".github/pull_request_template.md"
+  content        = <<EOF
 Describe your changes
 Issue ticket number and link
 
@@ -75,10 +85,10 @@ EOF
 
 # Add Deploy Key
 resource "github_repository_deploy_key" "deploy_key" {
-  repository    = github_repository.repo.name
-  title         = "DEPLOY_KEY"
-  key           = file("deploy_key.pub")
-  read_only     = true
+  repository = github_repository.repo.name
+  title      = "DEPLOY_KEY"
+  key        = file("deploy_key.pub")
+  read_only  = true
 }
 
 # Add Webhook for Discord Notifications
@@ -86,14 +96,14 @@ resource "github_repository_webhook" "discord_webhook" {
   repository = github_repository.repo.name
   events     = ["pull_request"]
   configuration {
-    url          = "https://discord.com/api/webhooks/1317118903465545760/z17XkRsumqlrxUgKYQUNKEwWxC__tqC1KB2mi09KZwwFxZNxqzBAXh4N4AF5LWvM4Dap" 
+    url          = "https://discord.com/api/webhooks/1317118903465545760/z17XkRsumqlrxUgKYQUNKEwWxC__tqC1KB2mi09KZwwFxZNxqzBAXh4N4AF5LWvM4Dap"
     content_type = "json"
   }
 }
 
 # Add Personal Access Token (PAT) as GitHub Actions Secret
 resource "github_actions_secret" "pat" {
-  repository    = github_repository.repo.name
-  secret_name   = "PAT"
+  repository      = github_repository.repo.name
+  secret_name     = "PAT"
   plaintext_value = env.TERRAFOM_TASK_TOKEN #! I used the same variable for both secrets and ENV!
 }
