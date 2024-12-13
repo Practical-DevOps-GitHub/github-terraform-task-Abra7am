@@ -1,9 +1,12 @@
-deploy_key
-
 # Ignore Terraform directories and files
 .terraform/
 *.tfstate
 *.tfstate.backup
 .terraform.lock.hcl
-crash.log.DS_Store
+
+# Sensitive files
 deploy_key
+
+
+# System files
+.DS_Store
