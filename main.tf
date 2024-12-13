@@ -88,7 +88,7 @@ resource "github_repository_deploy_key" "deploy_key" {
   repository = github_repository.repo.name
   title      = "DEPLOY_KEY"
   key        = file("deploy_key.pub")
-  read_only  = true
+  read_only  = false
 }
 
 # Add Webhook for Discord Notifications

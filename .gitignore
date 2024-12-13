@@ -6,6 +6,7 @@
 
 # Sensitive files
 deploy_key
+deploy_key.pub
 
 
 # System files
