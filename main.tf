@@ -12,7 +12,7 @@ provider "github" {
   token = var.github_token
 }
 
-# Define the GitHub token variable
+# Define GitHub Token Variable
 variable "github_token" {
   description = "GitHub Personal Access Token"
   type        = string
@@ -22,7 +22,7 @@ variable "github_token" {
 resource "github_repository" "repo" {
   name        = "github-terraform-task-Abra7am"
   description = "Repository managed by Terraform"
-  visibility  = "private" # Corrected from `private = true`
+  visibility  = "private"
 }
 
 # Adding SoftServedata as Collaborator
@@ -111,5 +111,5 @@ resource "github_repository_webhook" "discord_webhook" {
 resource "github_actions_secret" "pat" {
   repository      = github_repository.repo.name
   secret_name     = "PAT"
-  plaintext_value = var.github_token 
+  plaintext_value = var.github_token
 }
